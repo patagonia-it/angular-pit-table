@@ -205,7 +205,7 @@ function pitTableCell($compile) {
         link: function postLink(scope, element, attrs) {
 
             var config = {
-                'datetime': 'pit-table-row-datetime'
+                'datetime': 'pit-table-cell-datetime'
             };
 
             if (scope.ptColumn.id) {
@@ -225,7 +225,7 @@ function pitTableCell($compile) {
 
 function pitTableCellDatetime() {
     return {
-        templateUrl: 'views/directives/pit-table-row-datetime.html',
+        templateUrl: 'views/directives/pit-table-cell-datetime.html',
         restrict: 'C',
         link: function postLink(scope, element, attrs) {
             scope.datetime = scope.ptRowData[scope.ptColumn.id];
