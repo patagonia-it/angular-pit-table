@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angular-pit-table.directive', [])
+angular.module('angular-pit-table.directive', ['spring-data-rest'])
     .directive('pitTable', pitTable)
     .directive('pitTableRow', pitTableRow)
     .directive('pitTableCell', pitTableCell)
