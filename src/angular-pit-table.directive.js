@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('datatables.directive', [])
+angular.module('angular-pit-table.directive', [])
     .directive('pitTable', pitTable)
     .directive('pitTableRow', pitTableRow)
     .directive('pitTableCell', pitTableCell)
