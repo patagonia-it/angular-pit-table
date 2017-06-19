@@ -6,7 +6,7 @@ angular.module('angular-pit-table.directive', ['spring-data-rest'])
     .directive('pitTableCell', pitTableCell)
     .directive('pitTableCellDatetime', pitTableCellDatetime);
 
-function pitTable(){
+function pitTable(rest){
     return {
         templateUrl: 'views/directives/pit-table.html',
         restrict: 'E',
