@@ -81,6 +81,7 @@ function ptParamsBuilder(){
     return {
         newParams: function() {
             var params = Object.create(PTParams);
+            params.params = {};
             return params;
         },
         PTParams: PTParams
