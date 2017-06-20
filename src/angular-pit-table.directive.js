@@ -112,14 +112,15 @@ function pitTable($http, SpringDataRestAdapter) {
 
             scope.loadData = function () {
                 var httpPromise = $http({
-                    url: ptParams.url,
+                    url: scope.ptParams.url,
                     method: 'GET',
                     params: angular.extend(
+                        scope.ptParams.params,
                         {
                             page: scope.page.number,
                             size: config.pagination.size
                         },
-                        scope.ptParams, scope.getSort()
+                        scope.getSort()
                     )
                 });
 

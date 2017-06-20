@@ -60,8 +60,10 @@ function ptColumnBuilder(){
 function ptParamsBuilder(){
 
     var PTParams = {
-        withSearch: function(search) {
-            this.search = search;
+        withParam: function(key, value) {
+            if (angular.isString(key)) {
+                this.params[key] = value;
+            }
             return this;
         },
 
