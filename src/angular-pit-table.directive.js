@@ -29,6 +29,7 @@ function pitTable($http, SpringDataRestAdapter) {
             scope.pagination = [];
             scope.data = [];
 
+            console.info(scope.ptParams);
             if (angular.isDefined(scope.ptParams.event)) {
                 scope.$on(scope.ptParams.event, function () {
                     scope.page.number = 0;
