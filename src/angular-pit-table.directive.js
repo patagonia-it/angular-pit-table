@@ -1,20 +1,18 @@
 'use strict';
 
-angular.module('angular-pit-table.directive', ['spring-data-rest'])
+angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spring-data-rest'])
     .directive('pitTable', pitTable)
     .directive('pitTableRow', pitTableRow)
     .directive('pitTableCell', pitTableCell)
     .directive('pitTableCellDatetime', pitTableCellDatetime);
 
-function pitTable(rest){
+function pitTable($http, SpringDataRestAdapter) {
     return {
         templateUrl: 'views/directives/pit-table.html',
         restrict: 'E',
         scope: {
-            ptPath: '@',
             ptColumns: '=',
-            ptParams: '=',
-            ptEventName: '@'
+            ptParams: '='
         },
         link: function postLink(scope, element) {
             var config = {
@@ -31,15 +29,15 @@ function pitTable(rest){
             scope.pagination = [];
             scope.data = [];
 
-            if (angular.isDefined(scope.ptEventName)) {
-                scope.$on(scope.ptEventName, function () {
+            if (angular.isDefined(scope.ptParams.event)) {
+                scope.$on(scope.ptParams.event, function () {
                     scope.page.number = 0;
                     scope.loadData();
                 });
             }
 
             scope.updatePagination = function () {
-                if(!scope.page){
+                if (!scope.page) {
                     return;
                 }
                 var actual = scope.page.number;
@@ -113,18 +111,32 @@ function pitTable(rest){
             };
 
             scope.loadData = function () {
-                rest.findAll(scope.ptPath, angular.extend({
-                    page: scope.page.number,
-                    size: config.pagination.size
-                }, scope.ptParams, scope.getSort()), function (dtData) {
-                    scope.page = {
-                        number: dtData.number,
-                        totalPages: dtData.totalPages,
-                        totalElements: dtData.totalElements
-                    };
-                    scope.updatePagination();
-                    scope.data = dtData.content;
+                var httpPromise = $http({
+                    url: ptParams.url,
+                    method: 'GET',
+                    params: angular.extend(
+                        {
+                            page: scope.page.number,
+                            size: config.pagination.size
+                        },
+                        scope.ptParams, scope.getSort()
+                    )
                 });
+
+                SpringDataRestAdapter.process(httpPromise).then(
+                    function success(processedResponse) {
+                        scope.page = {
+                            number: dtData.number,
+                            totalPages: dtData.totalPages,
+                            totalElements: dtData.totalElements
+                        };
+                        scope.updatePagination();
+                        scope.data = dtData.content;
+                    },
+                    function error(response) {
+                        console.error('error al obtener la información', response)
+                    }
+                );
             };
 
             scope.pagButClass = function (pag) {
@@ -181,7 +193,7 @@ function pitTable(rest){
     };
 }
 
-function pitTableRow(){
+function pitTableRow() {
     return {
         templateUrl: 'views/directives/pit-table-row.html',
         restrict: 'A',
