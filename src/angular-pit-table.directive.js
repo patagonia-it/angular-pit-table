@@ -125,7 +125,7 @@ function pitTable($http, SpringDataRestAdapter) {
                 });
 
                 SpringDataRestAdapter.process(httpPromise).then(
-                    function success(processedResponse) {
+                    function success(dtData) {
                         scope.page = {
                             number: dtData.number,
                             totalPages: dtData.totalPages,
