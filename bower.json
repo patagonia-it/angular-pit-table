@@ -7,5 +7,9 @@
         "angular-spring-data-rest": "https://github.com/patagonia-it/angular-spring-data-rest.git#master",
         "angular-moment": "1.0.1"
     },
-    "main": ["./src/angular-pit-table.factory.js", "./src/angular-pit-table.directive.js", "./src/angular-pit-table.js"]
+    "main": [
+        "./src/angular-pit-table.options.js",
+        "./src/angular-pit-table.factory.js",
+        "./src/angular-pit-table.directive.js",
+        "./src/angular-pit-table.js"]
 }

@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spring-data-rest'])
-    .directive('pitTable', pitTable)
-    .directive('pitTableRow', pitTableRow)
-    .directive('pitTableCell', pitTableCell)
-    .directive('pitTableCellDatetime', pitTableCellDatetime);
+angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'angular-pit-table.options', 'spring-data-rest'])
+    .directive('PitTable', pitTable)
+    .directive('PitTableRow', pitTableRow)
+    .directive('PitTableCell', pitTableCell)
+    .directive('PitTableCellDatetime', pitTableCellDatetime);
 
-function pitTable($http, SpringDataRestAdapter) {
+function pitTable($http, SpringDataRestAdapter, PitTableOptions) {
     return {
         templateUrl: 'views/directives/pit-table.html',
         restrict: 'E',
@@ -41,9 +41,9 @@ function pitTable($http, SpringDataRestAdapter) {
                     return;
                 }
                 var actual = scope.page.number;
-                var from = Math.max(0, actual - config.pagination.radious);
-                var to = Math.min(from + 2 * config.pagination.radious, scope.page.totalPages - 1);
-                from = Math.max(0, to - 2 * config.pagination.radious);
+                var from = Math.max(0, actual - PitTableOptions.pageRadious);
+                var to = Math.min(from + 2 * PitTableOptions.pageRadious, scope.page.totalPages - 1);
+                from = Math.max(0, to - 2 * PitTableOptions.pageRadious);
                 scope.pagination = [
                     {
                         number: 0,
@@ -118,7 +118,7 @@ function pitTable($http, SpringDataRestAdapter) {
                         scope.ptParams.params,
                         {
                             page: scope.page.number,
-                            size: config.pagination.size
+                            size: PitTableOptions.pageSize
                         },
                         scope.getSort()
                     )
