@@ -196,7 +196,7 @@ function pitTable($http, SpringDataRestAdapter) {
 
 function pitTableRow() {
     return {
-        templateUrl: 'views/directives/pit-table-row.html',
+        template: '<td ng-repeat="ptColumn in ptColumns" pit-table-cell pt-column="ptColumn" pt-row-data="ptRowData"></td>',
         restrict: 'A',
         scope: {
             ptColumns: '=',
@@ -236,7 +236,7 @@ function pitTableCell($compile) {
 
 function pitTableCellDatetime() {
     return {
-        templateUrl: 'views/directives/pit-table-cell-datetime.html',
+        template: '{{datetime | humanDate }} <small class="text-info">({{datetime | fromNow}})</small>',
         restrict: 'C',
         link: function postLink(scope, element, attrs) {
             scope.datetime = scope.ptRowData[scope.ptColumn.id];
