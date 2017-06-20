@@ -1,28 +1,35 @@
 'use strict';
 
 angular.module('angular-pit-table.options', [])
-    .service('PitTableOptions', ptOptions);
+    .provider('pitTableOptions', pitTableOptionsProvider);
 
-function ptOptions() {
+function pitTableOptionsProvider() {
 
-    var options = {
-        pageRadious: 3,
-        pageSize: 25
+    var config = {
+        pageRadious: 2,
+        pageSize: 20
+    }
+
+    function PitTableOptions(config) {
+        this.pageRadious = config.pageRadious;
+        this.pageSize = config.pageSize;
     };
 
-    return options;
-
-    function setPageRadious(pageRadious){
-        if(angular.isNumber(pageRadious)){
-            options.pageRadious = pageRadious;
+    this.setPageRadious = function (pageRadious) {
+        if (angular.isNumber(pageRadious)) {
+            config.pageRadious = pageRadious;
         }
-        return options;
     }
 
-    function setPageSize(pageSize){
-        if(angular.isNumber(pageSize)){
-            options.pageSize = pageSize;
+    this.setPageSize = function (pageSize) {
+        if (angular.isNumber(pageSize)) {
+            config.pageSize = pageSize;
         }
-        return options;
     }
+
+    this.$get = [function () {
+        return new PitTableOptions(config);
+    }];
 }
+
+

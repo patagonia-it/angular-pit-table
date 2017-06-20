@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'angular-pit-table.options', 'spring-data-rest'])
-    .directive('PitTable', pitTable)
-    .directive('PitTableRow', pitTableRow)
-    .directive('PitTableCell', pitTableCell)
-    .directive('PitTableCellDatetime', pitTableCellDatetime);
+angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spring-data-rest'])
+    .directive('pitTable', pitTable)
+    .directive('pitTableRow', pitTableRow)
+    .directive('pitTableCell', pitTableCell)
+    .directive('pitTableCellDatetime', pitTableCellDatetime);
 
-function pitTable($http, SpringDataRestAdapter, PitTableOptions) {
+function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
+    console.log('pitTableOptions', pitTableOptions);
     return {
         templateUrl: 'views/directives/pit-table.html',
         restrict: 'E',
@@ -41,9 +42,9 @@ function pitTable($http, SpringDataRestAdapter, PitTableOptions) {
                     return;
                 }
                 var actual = scope.page.number;
-                var from = Math.max(0, actual - PitTableOptions.pageRadious);
-                var to = Math.min(from + 2 * PitTableOptions.pageRadious, scope.page.totalPages - 1);
-                from = Math.max(0, to - 2 * PitTableOptions.pageRadious);
+                var from = Math.max(0, actual - pitTableOptions.pageRadious);
+                var to = Math.min(from + 2 * pitTableOptions.pageRadious, scope.page.totalPages - 1);
+                from = Math.max(0, to - 2 * pitTableOptions.pageRadious);
                 scope.pagination = [
                     {
                         number: 0,
@@ -118,7 +119,7 @@ function pitTable($http, SpringDataRestAdapter, PitTableOptions) {
                         scope.ptParams.params,
                         {
                             page: scope.page.number,
-                            size: PitTableOptions.pageSize
+                            size: pitTableOptions.pageSize
                         },
                         scope.getSort()
                     )
@@ -225,7 +226,7 @@ function pitTableCell($compile) {
                 element.append($compile('<' + scope.ptColumn.directive + ' row-data="ptRowData"></' + scope.ptColumn.directive + '>')(scope));
             }
             else if (angular.isDefined(config[scope.ptColumn.type])) {
-                    element.append($compile('<' + scope.ptColumn.directive + ' class="' + config[scope.ptColumn.type] + '"></' + scope.ptColumn.directive + '>')(scope));
+                element.append($compile('<' + scope.ptColumn.directive + ' class="' + config[scope.ptColumn.type] + '"></' + scope.ptColumn.directive + '>')(scope));
             }
             else {
                 element.text(scope.ptRowData[scope.ptColumn.id]);
