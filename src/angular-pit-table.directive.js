@@ -221,16 +221,14 @@ function pitTableCell($compile) {
                 'datetime': 'pit-table-cell-datetime'
             };
 
-            if (scope.ptColumn.id) {
-                if (angular.isDefined(config[scope.ptColumn.type])) {
-                    element.append($compile('<' + scope.ptColumn.directive + ' class="' + config[scope.ptColumn.type] + '"></' + scope.ptColumn.directive + '>')(scope));
-                }
-                else {
-                    element.text(scope.ptRowData[scope.ptColumn.id]);
-                }
-            }
-            else if (scope.ptColumn.directive) {
+            if (scope.ptColumn.directive) {
                 element.append($compile('<' + scope.ptColumn.directive + ' row-data="ptRowData"></' + scope.ptColumn.directive + '>')(scope));
+            }
+            else if (angular.isDefined(config[scope.ptColumn.type])) {
+                    element.append($compile('<' + scope.ptColumn.directive + ' class="' + config[scope.ptColumn.type] + '"></' + scope.ptColumn.directive + '>')(scope));
+            }
+            else {
+                element.text(scope.ptRowData[scope.ptColumn.id]);
             }
         }
     };
