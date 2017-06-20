@@ -7,6 +7,7 @@ angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spr
     .directive('pitTableCellDatetime', pitTableCellDatetime);
 
 function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
+    console.log('pitTableOptions', pitTableOptions);
     return {
         templateUrl: 'views/directives/pit-table.html',
         restrict: 'E',
@@ -92,12 +93,12 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
                 var sort = null;
                 angular.forEach(scope.ptColumns, function (ptColumn) {
                     if (ptColumn.sort) {
-                        if (angular.isDefined(ptColumn.columns)) {
+                        if (angular.isDefined(ptColumn.orderColumns)) {
                             sort = {
                                 sort: []
                             };
-                            for (var i = 0; i < ptColumn.columns.length; i++) {
-                                sort.sort.push(ptColumn.columns[i] + ',' + ptColumn.sort);
+                            for (var i = 0; i < ptColumn.orderColumns.length; i++) {
+                                sort.sort.push(ptColumn.orderColumns[i] + ',' + ptColumn.sort);
                             }
                         }
                         else {
@@ -126,6 +127,7 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
                 SpringDataRestAdapter.process(httpPromise).then(
                     function success(dtData) {
+                        console.log('dtData', dtData);
                         scope.page = {
                             number: dtData.number,
                             totalPages: dtData.totalPages,
