@@ -8,8 +8,10 @@
         "angular-moment": "1.0.1"
     },
     "main": [
-        "./src/angular-pit-table.options.js",
-        "./src/angular-pit-table.factory.js",
-        "./src/angular-pit-table.directive.js",
-        "./src/angular-pit-table.js"]
+        "./src/views/pit-table.html",
+        "./src/scripts/angular-pit-table.options.js",
+        "./src/scripts/angular-pit-table.factory.js",
+        "./src/scripts/angular-pit-table.directive.js",
+        "./src/scripts/angular-pit-table.js"
+    ]
 }

@@ -8,7 +8,7 @@ function pitTableOptionsProvider() {
     var config = {
         pageRadious: 2,
         pageSize: 20
-    }
+    };
 
     function PitTableOptions(config) {
         this.pageRadious = config.pageRadious;
@@ -19,13 +19,13 @@ function pitTableOptionsProvider() {
         if (angular.isNumber(pageRadious)) {
             config.pageRadious = pageRadious;
         }
-    }
+    };
 
     this.setPageSize = function (pageSize) {
         if (angular.isNumber(pageSize)) {
             config.pageSize = pageSize;
         }
-    }
+    };
 
     this.$get = [function () {
         return new PitTableOptions(config);

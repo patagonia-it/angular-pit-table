@@ -9,7 +9,7 @@ angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spr
 function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
     console.log('pitTableOptions', pitTableOptions);
     return {
-        templateUrl: 'views/directives/pit-table.html',
+        templateUrl: 'views/pit-table.html',
         restrict: 'E',
         scope: {
             ptColumns: '=',
