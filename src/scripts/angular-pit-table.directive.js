@@ -7,7 +7,6 @@ angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spr
     .directive('pitTableCellDatetime', pitTableCellDatetime);
 
 function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
-    console.log('pitTableOptions', pitTableOptions);
     return {
         templateUrl: 'views/pit-table.html',
         restrict: 'E',
