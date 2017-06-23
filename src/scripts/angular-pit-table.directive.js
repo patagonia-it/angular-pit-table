@@ -196,7 +196,7 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
 function pitTableRow() {
     return {
-        template: '<td ng-repeat="ptColumn in ptColumns" pit-table-cell pt-column="ptColumn" pt-row-data="ptRowData"></td>',
+        template: '<td ng-repeat="ptColumn in ptColumns" pit-table-cell pt-column="ptColumn" pt-row-data="ptRowData" ng-class="ptColumn.clazz"></td>',
         restrict: 'A',
         scope: {
             ptColumns: '=',
@@ -221,11 +221,12 @@ function pitTableCell($compile) {
                 'datetime': 'pit-table-cell-datetime'
             };
 
+
             if (scope.ptColumn.directive) {
                 element.append($compile('<' + scope.ptColumn.directive + ' row-data="ptRowData"></' + scope.ptColumn.directive + '>')(scope));
             }
             else if (angular.isDefined(config[scope.ptColumn.type])) {
-                element.append($compile('<' + scope.ptColumn.directive + ' class="' + config[scope.ptColumn.type] + '"></' + scope.ptColumn.directive + '>')(scope));
+                 element.append($compile('<div class="' + config[scope.ptColumn.type] +'"></div>')(scope));
             }
             else {
                 element.text(scope.ptRowData[scope.ptColumn.id]);
