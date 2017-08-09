@@ -127,7 +127,7 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
-            if (angular.isDefined(dtData._embeddedItems)) {
+            if (angular.isDefined(dtData._embeddedItems)){
               scope.page = {
                 number: dtData.page.number,
                 totalPages: dtData.page.totalPages,
@@ -232,7 +232,6 @@ function pitTableCell($compile) {
       var config = {
         'datetime': 'pit-table-cell-datetime',
         'boolean': 'pit-table-cell-boolean'
-
       };
 
 
