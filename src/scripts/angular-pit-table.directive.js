@@ -16,12 +16,6 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
       ptParams: '='
     },
     link: function postLink(scope, element) {
-      var config = {
-        pagination: {
-          radious: 2,
-          size: 30
-        }
-      };
       scope.page = {
         number: 0,
         totalElements: 0,
@@ -112,22 +106,23 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
       };
 
       scope.loadData = function () {
+        var sort = scope.getSort();
         var httpPromise = $http({
           url: scope.ptParams.url,
           method: 'GET',
-          params: angular.extend(
+          params: angular.extend({},
             scope.ptParams.params,
             {
               page: scope.page.number,
               size: pitTableOptions.pageSize
             },
-            scope.getSort()
+            sort
           )
         });
 
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
-            if (angular.isDefined(dtData._embeddedItems)){
+            if (angular.isDefined(dtData._embeddedItems)) {
               scope.page = {
                 number: dtData.page.number,
                 totalPages: dtData.page.totalPages,
@@ -232,6 +227,7 @@ function pitTableCell($compile) {
       var config = {
         'datetime': 'pit-table-cell-datetime',
         'boolean': 'pit-table-cell-boolean'
+
       };
 
 
