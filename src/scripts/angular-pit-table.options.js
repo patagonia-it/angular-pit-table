@@ -7,12 +7,14 @@ function pitTableOptionsProvider() {
 
     var config = {
         pageRadious: 2,
-        pageSize: 20
+        pageSize: 20,
+        emptyTableText: 'Ningún dato disponible en esta tabla.'
     };
 
     function PitTableOptions(config) {
         this.pageRadious = config.pageRadious;
         this.pageSize = config.pageSize;
+        this.emptyTableText = config.emptyTableText;
     };
 
     this.setPageRadious = function (pageRadious) {
@@ -25,6 +27,10 @@ function pitTableOptionsProvider() {
         if (angular.isNumber(pageSize)) {
             config.pageSize = pageSize;
         }
+    };
+
+    this.setEmptyTableText = function (text) {
+      config.emptyTableText= text;
     };
 
     this.$get = [function () {

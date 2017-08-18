@@ -3,19 +3,22 @@
 angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spring-data-rest'])
   .directive('pitTable', pitTable)
   .directive('pitTableRow', pitTableRow)
+  .directive('pitTableRowEmpty', pitTableRowEmpty)
   .directive('pitTableCell', pitTableCell)
   .directive('pitTableCellDatetime', pitTableCellDatetime)
-  .directive('pitTableCellBoolean', pitTableCellBoolean);
+  .directive('pitTableCellBoolean', pitTableCellBoolean)
+  .directive('pitTableCellCheckbox', pitTableCellCheckbox);
 
 function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
   return {
     templateUrl: 'views/pit-table.html',
     restrict: 'E',
+    require: 'ngModel',
     scope: {
       ptColumns: '=',
       ptParams: '='
     },
-    link: function postLink(scope, element) {
+    link: function postLink(scope, element,  attrs, ngModel) {
       scope.page = {
         number: 0,
         totalElements: 0,
@@ -139,6 +142,20 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
               };
               scope.data = dtData.content;
             }
+
+            scope.$on('updateDataCheckEvent', function (event, data) {
+              angular.forEach(scope.data, function (dt) {
+                if ( dt.id == data.id ){
+                  dt.isCheck = data.isCheck;
+                }
+              });
+            });
+
+            ngModel.$setViewValue({
+              page: scope.page,
+              data: scope.data
+            });
+
             scope.updatePagination();
           },
           function error(response) {
@@ -215,6 +232,20 @@ function pitTableRow() {
   };
 }
 
+function pitTableRowEmpty(pitTableOptions) {
+  return {
+    template: '<td colspan="{{ptColspan}}" class="text-center">{{emptyText}}</td>',
+    restrict: 'A',
+    scope: {
+      ptColumns: '='
+    },
+    link: function postLink(scope, element, attrs) {
+      scope.ptColspan = scope.ptColumns.length;
+      scope.emptyText = pitTableOptions.emptyTableText;
+    }
+  };
+}
+
 function pitTableCell($compile) {
   return {
     restrict: 'A',
@@ -226,8 +257,8 @@ function pitTableCell($compile) {
 
       var config = {
         'datetime': 'pit-table-cell-datetime',
-        'boolean': 'pit-table-cell-boolean'
-
+        'boolean': 'pit-table-cell-boolean',
+        'checkbox': 'pit-table-cell-checkbox'
       };
 
 
@@ -260,6 +291,28 @@ function pitTableCellBoolean() {
     restrict: 'C',
     link: function postLink(scope, element, attrs) {
       scope.boolean = scope.ptRowData[scope.ptColumn.id];
+    }
+  };
+}
+
+function pitTableCellCheckbox() {
+  return {
+    template: '<span class="fa fa-square-o" ng-model="ischeck" ng-show="!ischeck" ng-click="approve()"></span>' +
+    '<span class="fa fa-check-square-o" ng-if="ischeck" ng-click="noApprove()"></span>',
+    restrict: 'C',
+    link: function postLink(scope, element, attrs) {
+      scope.ischeck = true;
+
+      scope.approve = function () {
+        scope.ischeck = true;
+        scope.ptRowData.ischeck = true;
+        scope.$emit('updateDataCheckEvent', scope.ptRowData);
+      };
+      scope.noApprove = function () {
+        scope.ischeck = false;
+        scope.ptRowData.ischeck = false;
+        scope.$emit('updateDataCheckEvent', scope.ptRowData);
+      };
     }
   };
 }
