@@ -81,12 +81,24 @@ function ptParamsBuilder() {
       this.eventName = eventName;
       return this;
     },
+
+    withMethod: function (method) {
+      this.method = method;
+      return this;
+    },
+
+    inBody: function (isInBody) {
+      this.isInBody = isInBody;
+      return this;
+    }
   };
 
   return {
     newParams: function () {
       var params = Object.create(PTParams);
       params.params = {};
+      params.method = 'GET';
+      params.isInBody = false;
       return params;
     },
     PTParams: PTParams

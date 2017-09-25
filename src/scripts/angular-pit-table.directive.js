@@ -110,10 +110,13 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
       scope.loadData = function () {
         var sort = scope.getSort();
-        var httpPromise = $http({
+        var object = {
           url: scope.ptParams.url,
-          method: 'GET',
-          params: angular.extend({},
+          method: scope.ptParams.method
+        };
+        console.log('ptParams', scope.ptParams);
+        if(scope.ptParams.isInBody){
+          object.data = angular.extend({},
             scope.ptParams.params,
             {
               page: scope.page.number,
@@ -121,7 +124,17 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
             },
             sort
           )
-        });
+        } else {
+          object.params = angular.extend({},
+            scope.ptParams.params,
+            {
+              page: scope.page.number,
+              size: pitTableOptions.pageSize
+            },
+            sort
+          )
+        }
+        var httpPromise = $http(object);
 
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
@@ -145,7 +158,7 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
             scope.$on('updateDataCheckEvent', function (event, data) {
               angular.forEach(scope.data, function (dt) {
-                if ( dt.id == data.id ){
+                if ( dt.id === data.id ){
                   dt.isCheck = data.isCheck;
                 }
               });
