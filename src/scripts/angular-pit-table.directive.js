@@ -114,16 +114,15 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
           url: scope.ptParams.url,
           method: scope.ptParams.method
         };
-        console.log('ptParams', scope.ptParams);
+
         if(scope.ptParams.isInBody){
-          object.data = angular.extend({},
-            scope.ptParams.params,
+          object.data = scope.ptParams.params;
+          object.params = angular.extend(
             {
               page: scope.page.number,
               size: pitTableOptions.pageSize
             },
-            sort
-          )
+            sort);
         } else {
           object.params = angular.extend({},
             scope.ptParams.params,
