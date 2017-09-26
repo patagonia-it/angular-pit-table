@@ -289,7 +289,7 @@ function pitTableCell($compile) {
 
 function pitTableCellDatetime() {
   return {
-    template: '{{datetime | humanDate }} <small class="text-info">({{datetime | fromNow}})</small>',
+    template: '<div ng-if="datetime">{{datetime | humanDate}} <small class="text-info">({{datetime | fromNow}})</small></div>',
     restrict: 'C',
     link: function postLink(scope, element, attrs) {
       scope.datetime = scope.ptRowData[scope.ptColumn.id];
