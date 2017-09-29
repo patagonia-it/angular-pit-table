@@ -32,8 +32,8 @@ function ptColumnBuilder() {
       return this;
     },
 
-    withOrder: function (order) {
-      this.order = order;
+    withOrder: function (sort) {
+      this.sort = sort;
       return this;
     },
 
