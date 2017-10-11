@@ -16,7 +16,7 @@ Es necesario configurar en el controlador algunas de las estructuras que permiti
 
 Para ellos se usarán los Factory **PTParamsBuilder** y **PTColumnBuilder**:
 
-```
+```javascript
   $scope.ptParams = PTParamsBuilder.newParams()
     //parámetros de búsqueda (son pasados como query params), se puede invocar más de una vez este método para tener múltiples parámetros
     .withParam('nombre_parametro', valor_parametro)
@@ -57,13 +57,15 @@ Para ellos se usarán los Factory **PTParamsBuilder** y **PTColumnBuilder**:
 
 Basta con incorporar dentro del HTML la siguiente directiva:
 
-`<pit-table ng-model="tabla" pt-columns="ptColumns" pt-params="ptParams"></pit-table>`
+```html
+<pit-table ng-model="tabla" pt-columns="ptColumns" pt-params="ptParams"></pit-table>
+```
 
 ### Configuración
 
 Es posible realizar una configuración global usando el _provider_ **pitTableOptions**:
 
-```
+```javascript
   .config(function (pitTableOptionsProvider) {
     //asigna un tamaño de página a todas las tablas
     pitTableOptionsProvider.setPageSize(25);
@@ -76,7 +78,7 @@ Es posible realizar una configuración global usando el _provider_ **pitTableOpt
 
 Por defecto la '_angular-pit-table_' muestra la información que se indica en la configuración, si se desea hacer algo más complejo que lo que permite la opción '_withType_' del **PTColumnBuilder**, se deben usar directivas, tal como se indica en el siguiente ejemplo:
 
-```
+```javascript
   .directive('nombreDirectiva', function () {
     return {
       templateUrl: 'views/directives/nombre-directive.html',
