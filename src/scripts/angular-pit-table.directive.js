@@ -225,7 +225,9 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
         scope.loadData();
       };
 
-      scope.loadData();
+      if(!angular.isDefined(scope.ptParams.params.loadAtStart) || scope.ptParams.params.loadAtStart ==='true') {
+        scope.loadData();
+      }
     }
   };
 }
@@ -281,7 +283,15 @@ function pitTableCell($compile) {
         element.append($compile('<div class="' + config[scope.ptColumn.type] + '"></div>')(scope));
       }
       else {
-        element.text(scope.ptRowData[scope.ptColumn.id]);
+        if(scope.ptColumn.id.constructor === Array){
+          var data = scope.ptRowData;
+          for (var i = 0; i < scope.ptColumn.id.length; i++) {
+            data = data[scope.ptColumn.id[i]];
+          }
+          element.text(data);
+        }else {
+          element.text(scope.ptRowData[scope.ptColumn.id]);
+        }
       }
     }
   };
