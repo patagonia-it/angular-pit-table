@@ -93,3 +93,8 @@ Por defecto la '_angular-pit-table_' muestra la información que se indica en la
     };
   });
 ```
+
+En el caso que se necesite pintar, una variable que esté dentro de un objeto de la lista
+```
+PTColumnBuilder.newColumn(['tipoPrestacion','nombre'], 'Tipo Prestación').withOrderColumns(['tipoPrestacion']),
+```
