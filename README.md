@@ -1,5 +1,37 @@
 # angular-pit-table
 
+## Objetivo
+
+La finalidad de '_angular-pit-table_' es consumir la respuesta de un servicio web, generando en forma automatizada una tabla con resultados paginados y ordenables por columnas en forma ascendente o descendente.
+
+## Requisitos de respuesta del servicio web
+
+El servicio web debe cumplir con el estándar [HATEOAS](https://projects.spring.io/spring-hateoas/), o bien, la respuesta debe considerar una estructura como la del siguiente ejemplo:
+
+```javascript
+{
+    "content": [
+        {
+        ...
+        },
+        {
+        ...
+        }
+    ],
+    "number": 0,
+    "size": 10,
+    "totalElements": 2,
+    "totalPages": 1
+}
+```
+Donde:
+
+    "content": datos a utilizar en la tabla.
+    "number": número de página, iniciando en 0, como la primera.
+    "size": cantidad de elementos a mostrar por página.
+    "totalElements": cantidad total de elementos mostrados en la tabla
+    "totalPages": cantidad total de páginas de la tabla
+
 ## Configuración
 
 Para poder utilizar '_angular-pit-table_' se debe definir como dependencia en el archivo **bower.json**.
