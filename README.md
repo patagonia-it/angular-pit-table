@@ -22,6 +22,8 @@ Para ellos se usarán los Factory **PTParamsBuilder** y **PTColumnBuilder**:
     .withParam('nombre_parametro', valor_parametro)
     //url donde se obtiene la información
     .withUrl(url_endpoint_data)
+    //limpia todo los filtros de busqueda
+    .withParamClean()
     //nombre del evento que la tabla atenderá y que gatillará un actualización de la data
     .withEventName('nombreEvento')
     //método que se utilizará al invocar el endpoint, por defecto 'GET'

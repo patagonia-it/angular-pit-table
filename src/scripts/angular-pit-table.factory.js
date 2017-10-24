@@ -72,6 +72,11 @@ function ptParamsBuilder() {
       return this;
     },
 
+    withParamClean: function () {
+      this.params = {};
+      return this;
+    },
+
     withUrl: function (url) {
       this.url = url;
       return this;
