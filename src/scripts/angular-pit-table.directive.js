@@ -155,25 +155,39 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
               scope.data = dtData.content;
             }
 
-            scope.$on('updateDataCheckEvent', function (event, data) {
-              angular.forEach(scope.data, function (dt) {
-                if ( dt.id === data.id ){
-                  dt.isCheck = data.isCheck;
-                }
-              });
+            scope.$on('updateDataCheckEvent', function (event, data, flag) {
+              var idx = scope.selected.indexOf(data.id);
+              if(flag) {
+                if (idx== -1) scope.selected.push(data.id);
+              } else {
+                delete scope.selected[idx];
+              }
+              setSelected();
             });
 
             ngModel.$setViewValue({
               page: scope.page,
-              data: scope.data
+              data: scope.data,
+              selected: scope.selected
             });
 
             scope.updatePagination();
+            setSelected();
           },
           function error(response) {
             console.error('error al obtener la información', response)
           }
         );
+      };
+
+      var setSelected = function() {
+        angular.forEach(scope.selected, function (value) {
+          angular.forEach(scope.data, function (dt) {
+            if ( dt.id == value ){
+              dt.isCheck = true;
+            }
+          });
+        });
       };
 
       scope.pagButClass = function (pag) {
@@ -323,17 +337,15 @@ function pitTableCellCheckbox() {
     '<span class="fa fa-check-square-o" ng-if="ischeck" ng-click="noApprove()"></span>',
     restrict: 'C',
     link: function postLink(scope, element, attrs) {
-      scope.ischeck = true;
+      scope.ischeck = scope.ptRowData.isCheck ? scope.ptRowData.isCheck : false;
 
       scope.approve = function () {
         scope.ischeck = true;
-        scope.ptRowData.ischeck = true;
-        scope.$emit('updateDataCheckEvent', scope.ptRowData);
+        scope.$emit('updateDataCheckEvent', scope.ptRowData, true);
       };
       scope.noApprove = function () {
         scope.ischeck = false;
-        scope.ptRowData.ischeck = false;
-        scope.$emit('updateDataCheckEvent', scope.ptRowData);
+        scope.$emit('updateDataCheckEvent', scope.ptRowData, false);
       };
     }
   };
