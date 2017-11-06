@@ -2,6 +2,7 @@
 
 angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spring-data-rest'])
   .directive('pitTable', pitTable)
+  .directive('pitTableHeaderCheckbox', pitTableHeaderCheckbox)
   .directive('pitTableRow', pitTableRow)
   .directive('pitTableRowEmpty', pitTableRowEmpty)
   .directive('pitTableCell', pitTableCell)
@@ -25,6 +26,9 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
         totalPages: 0
       };
       scope.pagination = [];
+      scope.selectedC = [];
+      scope.unSelectedC = [];
+      scope.selectAll = false;
       scope.data = [];
 
       if (angular.isDefined(scope.ptParams.eventName)) {
@@ -155,24 +159,42 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
               scope.data = dtData.content;
             }
 
+            if(scope.selectAll){
+              angular.forEach(scope.data, function (dt) {
+                scope.$emit('updateDataCheckEvent', dt, scope.selectAll);
+              });
+            }
+
             scope.$on('updateDataCheckEvent', function (event, data, flag) {
-              var idx = scope.selected.indexOf(data.id);
+              var idx = scope.selectedC.indexOf(data.id);
+              var idxUn = scope.unSelectedC.indexOf(data.id);
               if(flag) {
-                if (idx== -1) scope.selected.push(data.id);
+                if (idx== -1) scope.selectedC.push(data.id);
+                scope.unSelectedC.splice(idxUn, 1);
               } else {
-                delete scope.selected[idx];
+                delete scope.selectedC[idx];
+                scope.selectedC.length--;
+                if (idxUn== -1) scope.unSelectedC.push(data.id);
               }
-              setSelected();
+
+              scope.setSelected();
+            });
+
+            scope.$on('updatePaginationEvent', function (event, flag) {
+              scope.selectAll = flag;
+              scope.loadData();
             });
 
             ngModel.$setViewValue({
               page: scope.page,
               data: scope.data,
-              selected: scope.selected
+              selectedC: scope.selectedC,
+              unSelectedC: scope.unSelectedC,
+              selectAll: scope.selectAll
             });
 
             scope.updatePagination();
-            setSelected();
+            scope.setSelected();
           },
           function error(response) {
             console.error('error al obtener la información', response)
@@ -180,14 +202,24 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
         );
       };
 
-      var setSelected = function() {
-        angular.forEach(scope.selected, function (value) {
+      scope.setSelected = function() {
+
+        angular.forEach(scope.selectedC, function (value) {
           angular.forEach(scope.data, function (dt) {
             if ( dt.id == value ){
               dt.isCheck = true;
             }
           });
         });
+
+        angular.forEach(scope.unSelectedC, function (value) {
+          angular.forEach(scope.data, function (dt) {
+            if ( dt.id == value ){
+              dt.isCheck = false;
+            }
+          });
+        });
+
       };
 
       scope.pagButClass = function (pag) {
@@ -242,6 +274,36 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
       if(!angular.isDefined(scope.ptParams.params.loadAtStart) || scope.ptParams.params.loadAtStart ==='true') {
         scope.loadData();
       }
+    }
+  };
+}
+
+function pitTableHeaderCheckbox() {
+  return {
+    template: '<input ng-if="isCheckBoxAll" type="checkbox" ng-model="selectAll" ng-click="selectedChange()">',
+    restrict: 'E',
+    scope: {
+      ptColumns: '=',
+      ptRowData: '='
+    },
+    link: function postLink(scope, element, attrs) {
+
+      scope.isCheckBoxAll = scope.$parent.column.checkAll;
+
+      scope.selectedChange = function () {
+
+        scope.selectAll = !scope.selectAll;
+
+        if ( angular.isDefined(scope.$parent.data) && scope.$parent.data.length ) {
+          angular.forEach(scope.$parent.data, function (data) {
+            scope.$emit('updateDataCheckEvent', data, scope.selectAll);
+          });
+        }
+
+        scope.$emit('updatePaginationEvent', scope.selectAll);
+
+      };
+
     }
   };
 }

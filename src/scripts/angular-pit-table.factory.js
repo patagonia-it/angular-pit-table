@@ -42,6 +42,11 @@ function ptColumnBuilder() {
         this.orderColumns = orderColumns;
       }
       return this;
+    },
+
+    isCheckAll: function () {
+      this.checkAll = true;
+      return this;
     }
   };
 
@@ -53,6 +58,7 @@ function ptColumnBuilder() {
       var column = Object.create(PTColumn);
       column.id = id;
       column.sortable = true;
+      column.checkAll = false;
       if (angular.isDefined(name)) {
         column.name = name;
       }
