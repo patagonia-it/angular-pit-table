@@ -146,7 +146,8 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
           )
         }
         var httpPromise = $http(object);
-
+        scope.$root.isLoading = true;
+        scope.showLoading = true;
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
             if (angular.isDefined(dtData._embeddedItems)) {
@@ -203,9 +204,13 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
             scope.updatePagination();
             scope.setSelected();
+            scope.$root.isLoading = false;
+            scope.showLoading = false;
           },
           function error(response) {
-            console.error('error al obtener la información', response)
+            console.error('error al obtener la información', response);
+            scope.$root.isLoading = false;
+            scope.showLoading = false;
           }
         );
       };
