@@ -1,17 +1,18 @@
 {
-    "name": "angular-pit-table",
-    "version": "1.0.10",
-    "dependencies": {
-        "angular": "1.6.4",
-        "jquery": "2.2.4",
-        "angular-spring-data-rest": "https://github.com/patagonia-it/angular-spring-data-rest.git#master",
-        "angular-moment": "1.0.1"
-    },
-    "main": [
-        "./src/views/pit-table.html",
-        "./src/scripts/angular-pit-table.options.js",
-        "./src/scripts/angular-pit-table.factory.js",
-        "./src/scripts/angular-pit-table.directive.js",
-        "./src/scripts/angular-pit-table.js"
-    ]
+  "name": "angular-pit-table",
+  "version": "1.0.10",
+  "dependencies": {
+    "angular": "1.6.4",
+    "jquery": "2.2.4",
+    "angular-spring-data-rest": "https://github.com/patagonia-it/angular-spring-data-rest.git#master",
+    "angular-moment": "1.0.1",
+    "angular-loading-bar": "^0.9.0"
+  },
+  "main": [
+    "./src/views/pit-table.html",
+    "./src/scripts/angular-pit-table.options.js",
+    "./src/scripts/angular-pit-table.factory.js",
+    "./src/scripts/angular-pit-table.directive.js",
+    "./src/scripts/angular-pit-table.js"
+  ]
 }
