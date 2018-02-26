@@ -31,14 +31,6 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
       scope.selectAll = false;
       scope.data = [];
 
-      scope.$root.$on('cfpLoadingBar:started', function() {
-        scope.$root.isLoading = true;
-      });
-
-      scope.$root.$on('cfpLoadingBar:completed', function() {
-        scope.$root.isLoading = false;
-      });
-
       if (angular.isDefined(scope.ptParams.eventName)) {
         scope.$on(scope.ptParams.eventName, function () {
           scope.page.number = 0;
