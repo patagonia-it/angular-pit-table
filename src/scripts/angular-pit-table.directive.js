@@ -10,7 +10,7 @@ angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spr
   .directive('pitTableCellBoolean', pitTableCellBoolean)
   .directive('pitTableCellCheckbox', pitTableCellCheckbox);
 
-function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
+function pitTable($http, SpringDataRestAdapter, pitTableOptions, cfpLoadingBar) {
   return {
     templateUrl: 'views/pit-table.html',
     restrict: 'E',
@@ -30,6 +30,16 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
       scope.unSelectedC = [];
       scope.selectAll = false;
       scope.data = [];
+
+      scope.$on('cfpLoadingBar:started', function() {
+        scope.$root.isLoading = true;
+        scope.showLoading = true;
+      });
+
+      scope.$on('cfpLoadingBar:completed', function() {
+        scope.$root.isLoading = false;
+        scope.showLoading = false;
+      });
 
       if (angular.isDefined(scope.ptParams.eventName)) {
         scope.$on(scope.ptParams.eventName, function () {
@@ -138,8 +148,7 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
           )
         }
         var httpPromise = $http(object);
-        scope.$root.isLoading = true;
-        scope.showLoading = true;
+        cfpLoadingBar.start();
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
             if (angular.isDefined(dtData._embeddedItems)) {
@@ -196,15 +205,13 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions) {
 
             scope.updatePagination();
             scope.setSelected();
-            scope.$root.isLoading = false;
-            scope.showLoading = false;
           },
           function error(response) {
             console.error('error al obtener la información', response);
-            scope.$root.isLoading = false;
-            scope.showLoading = false;
           }
-        );
+        ).finally(function() {
+          cfpLoadingBar.complete();
+        });
       };
 
       scope.setSelected = function() {
