@@ -31,16 +31,6 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions, cfpLoadingBar) 
       scope.selectAll = false;
       scope.data = [];
 
-      scope.$on('cfpLoadingBar:started', function() {
-        scope.$root.isLoading = true;
-        scope.showLoading = true;
-      });
-
-      scope.$on('cfpLoadingBar:completed', function() {
-        scope.$root.isLoading = false;
-        scope.showLoading = false;
-      });
-
       if (angular.isDefined(scope.ptParams.eventName)) {
         scope.$on(scope.ptParams.eventName, function () {
           scope.page.number = 0;
@@ -148,7 +138,8 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions, cfpLoadingBar) 
           )
         }
         var httpPromise = $http(object);
-        cfpLoadingBar.start();
+        scope.$root.isLoading = true;
+        scope.showLoading = true;
         SpringDataRestAdapter.process(httpPromise).then(
           function success(dtData) {
             if (angular.isDefined(dtData._embeddedItems)) {
@@ -210,7 +201,8 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions, cfpLoadingBar) 
             console.error('error al obtener la información', response);
           }
         ).finally(function() {
-          cfpLoadingBar.complete();
+          scope.$root.isLoading = false;
+          scope.showLoading = false;
         });
       };
 
