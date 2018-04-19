@@ -7,6 +7,7 @@ angular.module('angular-pit-table.directive', ['angular-pit-table.factory', 'spr
   .directive('pitTableRowEmpty', pitTableRowEmpty)
   .directive('pitTableCell', pitTableCell)
   .directive('pitTableCellDatetime', pitTableCellDatetime)
+  .directive('pitTableCellDatetimeIso8601', pitTableCellDatetimeIso8601)
   .directive('pitTableCellBoolean', pitTableCellBoolean)
   .directive('pitTableCellCheckbox', pitTableCellCheckbox);
 
@@ -351,6 +352,7 @@ function pitTableCell($compile) {
 
       var config = {
         'datetime': 'pit-table-cell-datetime',
+        'datetimeiso8601': 'pit-table-cell-datetime-iso8601',
         'boolean': 'pit-table-cell-boolean',
         'checkbox': 'pit-table-cell-checkbox'
       };
@@ -373,6 +375,16 @@ function pitTableCell($compile) {
           element.text(scope.ptRowData[scope.ptColumn.id]);
         }
       }
+    }
+  };
+}
+
+function pitTableCellDatetimeIso8601() {
+  return {
+    template: '<div ng-if="datetime">{{datetime | humanDateIso8601}} <small class="text-info">({{datetime | fromNow}})</small></div> <div ng-if="!datetime" class="text-center">-</div>',
+    restrict: 'C',
+    link: function postLink(scope, element, attrs) {
+      scope.datetime = scope.ptRowData[scope.ptColumn.id];
     }
   };
 }

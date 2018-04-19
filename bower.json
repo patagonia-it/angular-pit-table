@@ -1,6 +1,6 @@
 {
   "name": "angular-pit-table",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "dependencies": {
     "angular": "1.6.4",
     "jquery": "2.2.4",
