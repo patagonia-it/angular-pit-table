@@ -7,6 +7,10 @@ angular.module('angular-pit-table.factory', [])
 function ptColumnBuilder() {
 
   var PTColumn = {
+    isInverse: function(){
+      this.inverse = true;
+      return this;
+    }
     withName: function (name) {
       this.name = name;
       return this;
@@ -58,6 +62,7 @@ function ptColumnBuilder() {
       var column = Object.create(PTColumn);
       column.id = id;
       column.sortable = true;
+      column.inverse = false;
       column.checkAll = false;
       if (angular.isDefined(name)) {
         column.name = name;

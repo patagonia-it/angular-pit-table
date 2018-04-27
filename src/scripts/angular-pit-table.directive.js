@@ -236,11 +236,22 @@ function pitTable($http, SpringDataRestAdapter, pitTableOptions, cfpLoadingBar) 
 
       scope.thIconClass = function (column) {
         if (column.sortable) {
-          return {
-            'fa-sort-desc': column.sort === 'desc',
-            'fa-sort-asc': column.sort === 'asc',
-            'fa-sort sortable': column.sortable
-          };
+
+          if(column.inverse){
+            return {
+              'fa-sort-asc': column.sort === 'desc',
+              'fa-sort-desc': column.sort === 'asc',
+              'fa-sort sortable': column.sortable
+            };
+          }else{
+            return {
+              'fa-sort-desc': column.sort === 'desc',
+              'fa-sort-asc': column.sort === 'asc',
+              'fa-sort sortable': column.sortable
+            };
+          }
+
+
         }
         else {
           return {};
