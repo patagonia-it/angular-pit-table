@@ -10,7 +10,7 @@ function ptColumnBuilder() {
     isInverse: function(){
       this.inverse = true;
       return this;
-    }
+    },
     withName: function (name) {
       this.name = name;
       return this;
